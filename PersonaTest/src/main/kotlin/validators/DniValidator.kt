@@ -20,8 +20,7 @@ class DniValidator {
         if (letraDni == letraCorrecta){
             return true
         }else{
-            return false
-        }
+            return false        }
 
     }
 }
