@@ -1,5 +1,7 @@
 package persona.validators
 
+import cache.exceptions.DniExceptions
+
 class DniValidator {
 
     class InvalidDniFormatException(message: String) : Exception(message)
@@ -11,7 +13,7 @@ class DniValidator {
             val regex = Regex("[0-9]{8}[A-Z]")
 
             if (!dni.matches(regex)) {
-                throw InvalidDniFormatException("El formato del DNI es incorrecto. Debe tener 8 números y 1 letra mayúscula.")
+                throw DniExceptions.DniInvalidoException("El formato del DNI no es válido.")
             }
 
             val numerosDni = dni.slice(0..7).toInt()
@@ -22,7 +24,7 @@ class DniValidator {
             val letraCorrecta = letrasDni[resto].toString()
 
             if (letraDni != letraCorrecta) {
-                throw InvalidDniLetterException("La letra del DNI es incorrecta. Se esperaba $letraCorrecta.")
+                throw DniExceptions.DniLetraInvalidaException("La letra del DNI no es válida.")
             }
 
             return true

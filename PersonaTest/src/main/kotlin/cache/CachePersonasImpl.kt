@@ -8,9 +8,10 @@ import java.util.*
 
 private val logger = logging()
 
-open class CacheImpl(
-    private val size: Int= 5
+open class CachePersonasImpl(
+    val size: Int = 5
 ) : Cache<UUID, Persona> {
+
 
     private val cache = mutableMapOf<UUID, Persona>()
 
