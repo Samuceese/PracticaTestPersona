@@ -49,11 +49,11 @@ class PersonasRepositoryImpl : PersonasRepository {
             return null
         }else{
             val updatePersona = persona.copy(
-                persona.id,
-                persona.dni,
-                persona.nombre,
-                persona.cuentaBancaria,
-                persona.tarjeta
+                id= t.id,
+                dni = t.dni,
+                nombre = t.nombre,
+                cuentaBancaria = t.cuentaBancaria,
+                tarjeta = t.tarjeta
             )
             db[dni] = updatePersona
             logger.info { "Persona actualizada $updatePersona" }
