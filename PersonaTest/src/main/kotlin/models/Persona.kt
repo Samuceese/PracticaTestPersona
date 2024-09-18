@@ -1,4 +1,4 @@
-package models.persona
+package models
 
 import java.util.*
 
