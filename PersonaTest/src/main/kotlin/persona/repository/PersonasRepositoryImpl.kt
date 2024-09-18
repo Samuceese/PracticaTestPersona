@@ -1,8 +1,7 @@
-package repository
+package persona.repository
 
-import models.Persona
+import persona.models.Persona
 import org.lighthousegames.logging.logging
-import java.util.UUID
 
 class PersonasRepositoryImpl : PersonasRepository {
     

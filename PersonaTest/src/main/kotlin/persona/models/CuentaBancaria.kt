@@ -1,4 +1,4 @@
-package models
+package persona.models
 
 data class CuentaBancaria(
     val iban : String,

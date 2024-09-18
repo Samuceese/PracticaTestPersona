@@ -1,4 +1,4 @@
-package repository.common
+package persona.repository.common
 
 interface Repository<ID,T> {
 
