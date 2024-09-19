@@ -43,7 +43,7 @@ class CachePersonasImplTest {
 
 
         assertAll(
-            { assertEquals(1, cache.size) },
+            { assertEquals(1, cache.cache.size) },
             { assertNotNull(result) },
             { assertEquals(persona, result) }
         )
@@ -76,7 +76,7 @@ class CachePersonasImplTest {
         val result = cache.get(persona.id)
 
         assertAll(
-            { assertEquals(1, cache.size) },
+            { assertEquals(1, cache.cache.size) },
             { assertNotNull(result) },
             { assertEquals(persona, result) }
         )
@@ -105,6 +105,6 @@ class CachePersonasImplTest {
 
         cache.put(persona.id, persona)
         cache.clear()
-        assertEquals(0, cache.size)
+        assertEquals(0, cache.cache.size)
     }
 }

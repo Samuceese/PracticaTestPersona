@@ -11,7 +11,6 @@ class TarjetaValidatorTest {
 
     private val validator = TarjetaValidator()
 
-    // Tests para validarNumeroTarjeta
     @Test
     @DisplayName("Número de tarjeta válido")
     fun numeroTarjetaValido() {

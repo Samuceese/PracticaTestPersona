@@ -1,6 +1,7 @@
 package org.example.cache
 
 import cache.Cache
+import cache.CachePersonas
 import cache.exceptions.CacheExceptions
 import org.lighthousegames.logging.logging
 import persona.models.Persona
@@ -8,12 +9,12 @@ import java.util.*
 
 private val logger = logging()
 
-open class CachePersonasImpl(
-    var size: Int = 1
-) : Cache<UUID, Persona> {
+class CachePersonasImpl(
+    var size: Int = 5
+) : CachePersonas {
 
 
-    private val cache = mutableMapOf<UUID, Persona>()
+    val cache = mutableMapOf<UUID, Persona>()
 
     override fun get(key: UUID): Persona {
         logger.debug { "Obteniendo valor de la cache" }

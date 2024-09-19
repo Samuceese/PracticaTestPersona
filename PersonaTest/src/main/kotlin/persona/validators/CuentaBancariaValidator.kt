@@ -14,12 +14,12 @@ class CuentaBancariaValidator {
 
         if (!isIbanValid(cuentaBancaria.iban)) {
             logger.error { "Error en la validación del IBAN" }
-            throw CuentaBancariaException.IbanNoValidoException("IBAN inválido: debe tener 24 caracteres y el código de IBAN es incorrecto")
+            throw CuentaBancariaException.IbanNoValidoException()
         }
 
         if (!isSaldoValid(cuentaBancaria.saldo)) {
             logger.error { "Error en la validación del saldo" }
-            throw CuentaBancariaException.SaldoNoValidoException("Saldo inválido: el monto no puede ser menor a 0")
+            throw CuentaBancariaException.SaldoNoValidoException()
         }
 
         logger.info { "Cuenta bancaria validada correctamente" }
@@ -28,16 +28,16 @@ class CuentaBancariaValidator {
 
     private fun isIbanValid(iban: String): Boolean {
         logger.debug { "Validando el IBAN" }
-        val cleanIban = iban.replace(" ", "")
-        if (cleanIban.length != 24) {
+        val ibanLimpio = iban.replace(" ", "")
+        if (ibanLimpio.length != 24) {
             logger.error { "El IBAN debe tener 24 caracteres" }
             return false
         }
 
-        val reorderedIban = cleanIban.substring(4) + cleanIban.substring(0, 4)
+        val ibanReordenado = ibanLimpio.substring(4) + ibanLimpio.substring(0, 4)
         val ibanDigits = StringBuilder()
 
-        for (char in reorderedIban) {
+        for (char in ibanReordenado) {
             ibanDigits.append(
                 if (char.isDigit()) {
                     char

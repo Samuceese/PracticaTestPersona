@@ -1,6 +1,16 @@
 package persona.validators
 
+import cache.exceptions.TarjetaException
+import persona.models.Tarjeta
+
 class TarjetaValidator {
+
+    fun validarTarjeta(tarjeta: Tarjeta): Tarjeta {
+        if (!validarNumeroTarjeta(tarjeta.numero)) throw TarjetaException.NumeroTarjetaNoValidoException()
+        if (!validarFechaTarjeta(tarjeta.fecha)) throw TarjetaException.FechaTarjetaNoValidoException()
+
+        return tarjeta
+    }
 
     fun validarNumeroTarjeta(tarjeta: String): Boolean {
         val numeroLimpio = tarjeta.replace(Regex("[ -]"), "")

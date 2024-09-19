@@ -22,7 +22,8 @@ dependencies {
     implementation("com.github.ajalt.mordant:mordant:2.0.0-beta9")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.12.0")
 }
 
 tasks.test {

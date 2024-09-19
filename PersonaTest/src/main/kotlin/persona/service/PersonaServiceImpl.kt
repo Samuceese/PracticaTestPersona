@@ -1,4 +1,4 @@
-package dev.joseluisgs.personas.services
+package service
 
 import cache.CachePersonas
 import cache.exceptions.PersonaException
@@ -6,12 +6,19 @@ import org.lighthousegames.logging.logging
 import persona.models.Persona
 import persona.repository.PersonasRepository
 import persona.service.PersonasService
+import persona.validators.CuentaBancariaValidator
+import persona.validators.DniValidator
+import persona.validators.TarjetaValidator
 import java.util.*
 
 class PersonasServiceImpl(
     private val cache: CachePersonas,
-    private val repository: PersonasRepository
+    private val repository: PersonasRepository,
+    private val dniValidator : DniValidator,
+    private val cuentaBancariaValidator : CuentaBancariaValidator,
+    private val tarjetaValidator : TarjetaValidator
 ) : PersonasService {
+
 
     private val logger = logging()
 
@@ -39,12 +46,18 @@ class PersonasServiceImpl(
         }
 
         logger.error { "Persona no encontrada con ID: $id" }
-        throw PersonaException.PersonaNoEncontradaExcepcion("La persona no ha sido encontrada.")
+        throw PersonaException.PersonaNoEncontradaExcepcion()
     }
 
     override fun save(persona: Persona): Persona {
         logger.debug { "Guardando persona en el repositorio: $persona" }
+
+        dniValidator.validarDni(persona.dni)
+        cuentaBancariaValidator.validate(persona.cuentaBancaria)
+        tarjetaValidator.validarTarjeta(persona.tarjeta)
+
         val result = repository.save(persona)
+        cache.put(result.id, result)
         logger.info { "Persona guardada en el repositorio: $result" }
         return result
     }
@@ -52,11 +65,17 @@ class PersonasServiceImpl(
     override fun update(id: UUID, persona: Persona): Persona {
         logger.debug { "Actualizando persona en el repositorio con ID: $id y datos: $persona" }
         cache.remove(id)
+
+        dniValidator.validarDni(persona.dni)
+        cuentaBancariaValidator.validate(persona.cuentaBancaria)
+        tarjetaValidator.validarTarjeta(persona.tarjeta)
+
         val result = repository.update(id, persona)
         if (result == null) {
             logger.error { "No se pudo actualizar la persona con ID: $id" }
-            throw PersonaException.PersonaNoActualizadaExcepcion("La persona no ha sido actualizada.")
+            throw PersonaException.PersonaNoActualizadaExcepcion()
         }
+        cache.put(result.id, result)
         logger.info { "Persona actualizada en el repositorio: $result" }
         return result
     }
@@ -67,7 +86,7 @@ class PersonasServiceImpl(
         val result = repository.delete(id)
         if (result == null) {
             logger.error { "No se pudo eliminar la persona con ID: $id" }
-            throw PersonaException.PersonaNoBorradaExcepcion("La persona no ha sido borrada.")
+            throw PersonaException.PersonaNoBorradaExcepcion()
         }
         logger.info { "Persona eliminada en el repositorio: $result" }
         return result
