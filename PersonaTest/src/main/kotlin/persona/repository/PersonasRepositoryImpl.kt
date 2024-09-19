@@ -1,14 +1,14 @@
-package persona.repository
-
 import persona.models.Persona
 import org.lighthousegames.logging.logging
+import persona.repository.PersonasRepository
+import java.util.*
 
 class PersonasRepositoryImpl : PersonasRepository {
-    
+
     private val logger = logging()
 
-    private val db = hashMapOf<String, Persona>()
-    
+    private val db = mutableMapOf<UUID, Persona>()  // Cambiado a UUID como clave
+
     override fun getAll(): List<Persona> {
         logger.debug { "Obteniendo todas las personas" }
         logger.info { "Total de personas: ${db.size}" }
@@ -16,15 +16,15 @@ class PersonasRepositoryImpl : PersonasRepository {
         return db.values.toList()
     }
 
-    override fun getById(dni: String): Persona? {
-        logger.debug { "Obteniendo persona con dni: $dni" }
+    override fun getById(id: UUID): Persona? {
+        logger.debug { "Obteniendo persona con id: $id" }
 
-        val persona = db[dni]
+        val persona = db[id]
 
-        if (persona == null){
-            logger.warn { "La persona con dni $dni no existe" }
-        }else{
-            logger.info { "Persona encontrada con deni $dni" }
+        if (persona == null) {
+            logger.warn { "La persona con id $id no existe" }
+        } else {
+            logger.info { "Persona encontrada con id $id" }
         }
 
         return persona
@@ -33,43 +33,44 @@ class PersonasRepositoryImpl : PersonasRepository {
     override fun save(t: Persona): Persona {
         logger.debug { "Guardando persona $t" }
 
-        val nuevaPersona = t.copy()
+        db[t.id] = t
+
         logger.info { "Persona guardada $t" }
 
-        return nuevaPersona
+        return t
     }
 
-    override fun update(dni: String, t: Persona): Persona? {
-        logger.debug { "Actualizando persona $t" }
-        val persona = db[dni]
+    override fun update(id: UUID, t: Persona): Persona? {
+        logger.debug { "Actualizando persona con id: $id" }
 
-        if (persona == null){
-            logger.warn { "La persona con dni $dni no existe" }
+        val persona = db[id]
+
+        if (persona == null) {
+            logger.warn { "La persona con id $id no existe" }
             return null
-        }else{
-            val updatePersona = persona.copy(
-                id= t.id,
-                dni = t.dni,
+        } else {
+            val updatedPersona = persona.copy(
                 nombre = t.nombre,
                 cuentaBancaria = t.cuentaBancaria,
                 tarjeta = t.tarjeta
             )
-            db[dni] = updatePersona
-            logger.info { "Persona actualizada $updatePersona" }
-            return updatePersona
+            db[id] = updatedPersona
+            logger.info { "Persona actualizada $updatedPersona" }
+            return updatedPersona
         }
     }
 
-    override fun delete(dni: String): Persona? {
-        logger.debug { "Eliminando persona con dni: $dni" }
-        val persona = db[dni]
+    override fun delete(id: UUID): Persona? {
+        logger.debug { "Eliminando persona con id: $id" }
 
-        if (persona == null){
-            logger.warn { "La persona con dni $dni no existe" }
-            return null
+        val persona = db.remove(id)
+
+        if (persona == null) {
+            logger.warn { "La persona con id $id no existe" }
+        } else {
+            logger.info { "Persona eliminada $persona" }
         }
-        db.remove(dni)
-        logger.info { "Persona eliminada $persona" }
+
         return persona
     }
 }
