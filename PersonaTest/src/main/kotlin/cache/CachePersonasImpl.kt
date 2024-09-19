@@ -9,7 +9,7 @@ import java.util.*
 private val logger = logging()
 
 open class CachePersonasImpl(
-    val size: Int = 5
+    var size: Int = 1
 ) : Cache<UUID, Persona> {
 
 

@@ -4,14 +4,12 @@ import cache.exceptions.DniExceptions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import persona.validators.DniValidator
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DniValidatorTest {
 
-    private val validator = DniValidator.DniValidator()
+    private val validator = DniValidator()
 
     @Test
     @DisplayName("Validación del DNI correcto")
@@ -32,15 +30,10 @@ class DniValidatorTest {
         // Arrange
         val dni = "123456789Z"
 
-        //act
-        val result = assertThrows<DniExceptions> { validator.validarDni(dni) }
-
-        //assert
-        assertEquals("El formato del DNI no es válido.", result.message)
-
-
+        // Act & Assert
+        val exception = assertThrows<DniExceptions> { validator.validarDni(dni) }
+        assertEquals("El formato del DNI no es válido.", exception.message)
     }
-
 
     @Test
     @DisplayName("DNI incorrecto, menos de 9 caracteres")
@@ -48,10 +41,9 @@ class DniValidatorTest {
         // Arrange
         val dni = "1234567Z"
 
-        // Assert
-        val result = assertThrows<DniExceptions> { validator.validarDni(dni) }
-            // Act
-        assertEquals("El formato del DNI no es válido.", result.message)
+        // Act & Assert
+        val exception = assertThrows<DniExceptions> { validator.validarDni(dni) }
+        assertEquals("El formato del DNI no es válido.", exception.message)
     }
 
     @Test
@@ -60,10 +52,9 @@ class DniValidatorTest {
         // Arrange
         val dni = "ZZZZZZZZZ"
 
-        // Assert
-        val result = assertThrows<DniExceptions> { validator.validarDni(dni) }
-        // Act
-        assertEquals("El formato del DNI no es válido.", result.message)
+        // Act & Assert
+        val exception = assertThrows<DniExceptions> { validator.validarDni(dni) }
+        assertEquals("El formato del DNI no es válido.", exception.message)
     }
 
     @Test
@@ -72,10 +63,9 @@ class DniValidatorTest {
         // Arrange
         val dni = "123456789"
 
-        // Assert
-        val result = assertThrows<DniExceptions> { validator.validarDni(dni) }
-        // Act
-        assertEquals("El formato del DNI no es válido.", result.message)
+        // Act & Assert
+        val exception = assertThrows<DniExceptions> { validator.validarDni(dni) }
+        assertEquals("El formato del DNI no es válido.", exception.message)
     }
 
     @Test
@@ -84,9 +74,8 @@ class DniValidatorTest {
         // Arrange
         val dni = "12345678A"
 
-        // Assert
-        val result = assertThrows<DniExceptions> { validator.validarDni(dni) }
-        // Act
-        assertEquals("La letra del DNI no es válida.", result.message)
+        // Act & Assert
+        val exception = assertThrows<DniExceptions> { validator.validarDni(dni) }
+        assertEquals("La letra del DNI no es válida.", exception.message)
     }
 }
