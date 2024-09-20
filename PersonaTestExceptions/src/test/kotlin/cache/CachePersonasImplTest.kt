@@ -3,6 +3,7 @@ package cache
 import cache.exceptions.CacheExceptions
 import org.example.cache.CachePersonasImpl
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
@@ -84,8 +85,23 @@ class CachePersonasImplTest {
     }
 
     @Test
-    fun remove() {
+    fun removeOk() {
+        val persona = Persona(
+            id = UUID.fromString("a7c9d1f4-3e5b-46b7-9f2d-88e6b45d01a3"),
+            nombre = "Test1",
+            dni = "12345678Z",
+            cuentaBancaria = CuentaBancaria("ES91 2100 0418 4502 0005 1332", 100.0),
+            tarjeta = Tarjeta("4539 1488 0343 6467", "12/25")
+        )
+
+        cache.put(persona.id, persona)
+
+        val removedPersona = cache.remove(persona.id)
+
+        assertEquals(persona, removedPersona)
+        assertEquals(0, cache.cache.size)
     }
+
 
     @Test
     fun clear() {
@@ -105,6 +121,7 @@ class CachePersonasImplTest {
 
         cache.put(persona.id, persona)
         cache.clear()
+
         assertEquals(0, cache.cache.size)
     }
 }
