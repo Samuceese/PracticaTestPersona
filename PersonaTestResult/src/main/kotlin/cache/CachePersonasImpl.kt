@@ -5,7 +5,7 @@ import persona.models.Persona
 import java.util.*
 
 private val logger= logging()
-class ClienteCacheImpl : CachePersonas {
+class CachePersonasImpl : CachePersonas {
 
 
     private val cache: MutableMap<UUID, Persona> = mutableMapOf()
