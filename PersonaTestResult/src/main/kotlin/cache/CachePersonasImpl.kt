@@ -1,51 +1,34 @@
-package org.example.cache
+package cache
 
-import cache.Cache
-import cache.CachePersonas
-import cache.exceptions.CacheExceptions
 import org.lighthousegames.logging.logging
 import persona.models.Persona
 import java.util.*
 
-private val logger = logging()
-
-class CachePersonasImpl(
-    var size: Int = 5
-) : CachePersonas {
+private val logger= logging()
+class ClienteCacheImpl : CachePersonas {
 
 
-    val cache = mutableMapOf<UUID, Persona>()
+    private val cache: MutableMap<UUID, Persona> = mutableMapOf()
 
-    override fun get(key: UUID): Persona {
-        logger.debug { "Obteniendo valor de la cache" }
-        return cache[key] ?: run {
-            logger.info { "No existe el valor en la cache" }
-            throw CacheExceptions.CacheNotFoundException("No existe el valor en la cache")
-        }
+    override fun get(id: UUID): Persona? {
+        logger.debug { "Buscando persona con id $id en Cache" }
+        return cache[id]
     }
 
-    override fun put(key: UUID, value: Persona): Persona {
-        logger.debug { "Guardando valor en la cache" }
-        if (cache.size >= size && !cache.containsKey(key)) {
-            logger.debug { "Eliminando valor más antiguo de la cache" }
-            cache.remove(cache.keys.first())
-        }
-        cache[key] = value
-        logger.debug { "Guardado valor en la cache con éxito" }
-        return value
+    override fun put(id: UUID, value: Persona) {
+        logger.debug { "Metiendo persona con id $id en Cache" }
+        cache[id] = value
     }
 
-    override fun remove(key: UUID): Persona {
-        logger.debug { "Eliminando valor de la cache" }
-        return cache.remove(key) ?: run {
-            logger.info { "No existe el valor en la cache" }
-            throw CacheExceptions.CacheNotFoundException("No existe el valor en la cache")
-        }
+    override fun remove(id: UUID) {
+        logger.debug { "Eliminando persona con id $id de Cache" }
+        cache.remove(id)
     }
 
-    override fun clear() {
-        logger.debug { "Limpiando cache" }
+    override fun clear(){
+        logger.debug { "Eliminando cache" }
         cache.clear()
-        logger.debug { "Cache limpiada con éxito" }
     }
+
+    override fun size() = cache.size
 }
