@@ -22,7 +22,7 @@ import kotlin.test.Test
 import kotlin.test.assertFalse
 
 @ExtendWith(MockitoExtension::class)
-class ClienteValidatorTest {
+class PersonaValidatorTest {
 
     @Mock
     lateinit var tarjetaValidator: TarjetaValidator
