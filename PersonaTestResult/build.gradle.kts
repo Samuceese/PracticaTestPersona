@@ -20,6 +20,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.0")
     implementation("io.github.pdvrieze.xmlutil:core-jvm:0.86.3")
     implementation("com.github.ajalt.mordant:mordant:2.0.0-beta9")
+    // Result ROP
+    implementation("com.michael-bull.kotlin-result:kotlin-result:2.0.0")
 
     testImplementation(kotlin("test"))
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")

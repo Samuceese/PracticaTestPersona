@@ -1,4 +1,4 @@
-package cache
+package cache.common
 
 interface Cache<K, T> {
     fun get(key: K): T?
