@@ -102,9 +102,42 @@ class CachePersonasImplTest {
 
     @Test
     fun clear() {
+        val persona = Persona(
+            id = UUID.fromString("23d41191-8a78-4c02-9127-06e76b56af16"),
+            nombre = "Test01",
+            dni = "12345678Z",
+            cuentaBancaria = CuentaBancaria(
+                iban = "ES12345678901234567890",
+                saldo = 100.0
+            ),
+            tarjeta = Tarjeta(
+                numero = "1234567812345678",
+                fecha = "12/26",
+            )
+        )
+
+        cache.put(persona.id, persona)
+        cache.clear()
+        assertEquals(0, cache.size())
     }
 
     @Test
     fun size() {
+        val persona = Persona(
+            id = UUID.fromString("23d41191-8a78-4c02-9127-06e76b56af16"),
+            nombre = "Test01",
+            dni = "12345678Z",
+            cuentaBancaria = CuentaBancaria(
+                iban = "ES12345678901234567890",
+                saldo = 100.0
+            ),
+            tarjeta = Tarjeta(
+                numero = "1234567812345678",
+                fecha = "12/26",
+            )
+        )
+
+        cache.put(persona.id, persona)
+        assertEquals(1, cache.size())
     }
 }

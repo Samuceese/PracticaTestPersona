@@ -18,12 +18,12 @@ class TarjetaValidator {
 
         return when {
             !validarNumero(tarjeta.numero) -> Err(TarjetaError.NumeroError(tarjeta.numero))
-            !validarCaducidad(tarjeta.fecha) -> Err(TarjetaError.FechaError(tarjeta.fecha))
+            !validarFecha(tarjeta.fecha) -> Err(TarjetaError.FechaError(tarjeta.fecha))
             else -> Ok(tarjeta)
         }
     }
 
-    private fun validarNumero(numero: String): Boolean {
+    fun validarNumero(numero: String): Boolean {
         logger.debug { "Validando número de tarjeta $numero" }
         val tarjetaFormateada = numero.replace(" ", "").replace("-", "")
 
@@ -32,7 +32,7 @@ class TarjetaValidator {
         return calcularSumaLuhn(tarjetaFormateada) % 10 == 0
     }
 
-    private fun calcularSumaLuhn(numero: String): Int {
+    fun calcularSumaLuhn(numero: String): Int {
         var sumaTotal = 0
         var esSegundoDigito = false
 
@@ -49,7 +49,7 @@ class TarjetaValidator {
         return sumaTotal
     }
 
-    private fun validarCaducidad(fecha: String): Boolean {
+    fun validarFecha(fecha: String): Boolean {
         logger.debug { "Validando fecha de caducidad $fecha" }
 
         if (!fecha.matches(Regex("^\\d{2}/\\d{2}$"))) return false
@@ -65,4 +65,5 @@ class TarjetaValidator {
 
         return !fechaCaducidad.isBefore(YearMonth.now())
     }
+
 }

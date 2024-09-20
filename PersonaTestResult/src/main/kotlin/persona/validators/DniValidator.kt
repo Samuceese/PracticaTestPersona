@@ -19,7 +19,7 @@ class DniValidator {
         }
     }
 
-    private fun validarNumeroDni(dni: String): Boolean {
+    fun validarNumeroDni(dni: String): Boolean {
         logger.debug { "Validando número de DNI: $dni" }
         val dniRegex = Regex("[0-9]{8}[A-Z]$")
 

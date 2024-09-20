@@ -8,10 +8,11 @@ private val logger= logging()
 
 class PersonasRepositoryImpl : PersonasRepository {
 
-    private val db = hashMapOf<UUID, Persona>()
+    private val db = mutableMapOf<UUID, Persona>()
 
     override fun getAll(): List<Persona> {
-        logger.debug { "Obteniendo todas las personas" }
+        logger.debug { "Obteniendo todos los clientes" }
+
         return db.values.toList()
     }
 
@@ -36,21 +37,22 @@ class PersonasRepositoryImpl : PersonasRepository {
 
     override fun update(id: UUID, persona: Persona): Persona? {
         logger.debug { "Actualizando persona con id: $id" }
-        val persona = db[id]
-        if (persona == null) {
+        val personaExistente = db[id]
+        if (personaExistente == null) {
             logger.warn { "Persona con id: $id no encontrada" }
             return null
         } else {
-            val personaActual = persona.copy(
+            val personaActualizada = personaExistente.copy(
                 nombre = persona.nombre,
                 tarjeta = persona.tarjeta,
                 cuentaBancaria = persona.cuentaBancaria
             )
-            db[id] = personaActual
-            logger.info { "Cliente actualizado: $personaActual" }
-            return personaActual
+            db[id] = personaActualizada
+            logger.info { "Cliente actualizado: $personaActualizada" }
+            return personaActualizada
         }
     }
+
 
     override fun delete(id: UUID): Persona? {
         logger.debug { "Borrando persona con id: $id" }
