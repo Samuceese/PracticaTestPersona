@@ -575,7 +575,7 @@ class PersonasServiceImplTest {
         verify(cache, times(0)).remove(id)
         verify(repository, times(1)).delete(id)
     }
-    
+
 
 }
 
